@@ -423,14 +423,14 @@ EOF
         echo -e "${GREEN}[+] Audit rules configured${NC}\n"
     fi
     
-    echo -e \"${GREEN}[✓] User & access control configuration complete!${NC}\\n\"
+    echo -e "${GREEN}[✓] User & access control configuration complete!${NC}\n"
 }
 
 ################################################################################
 # Function: System & Network Tuning
 ################################################################################
 system_network_tuning() {
-    echo -e \"\\n${BLUE}=== System & Network Tuning ===${NC}\\n\"
+    echo -e "\n${BLUE}=== System & Network Tuning ===${NC}\n"
     
     echo "Select tuning profile:"
     echo "  [1] High Performance (Low Latency)"
@@ -441,9 +441,9 @@ system_network_tuning() {
     echo "  [6] Streaming/Media Server"
     echo "  [7] File Hosting Server"
     echo "  [8] Torrenting Server"
-    read -p \"Select profile (1-8): \" profile_choice
+    read -p "Select profile (1-8): " profile_choice
     
-    case \$profile_choice in
+    case $profile_choice in
         1)
             tune_high_performance
             ;;
@@ -469,7 +469,7 @@ system_network_tuning() {
             tune_torrenting_server
             ;;
         *)
-            echo -e \"${RED}[!] Invalid option${NC}\"
+            echo -e "${RED}[!] Invalid option${NC}"
             return
             ;;
     esac
@@ -480,92 +480,92 @@ system_network_tuning() {
 ################################################################################
 
 tune_high_performance() {
-    echo -e \"\\n${BLUE}[*] Applying High Performance profile...${NC}\\n\"
+    echo -e "\n${BLUE}[*] Applying High Performance profile...${NC}\n"
     
     # CPU Governor
-    echo \"[1] Setting CPU governor to performance...\"
+    echo "[1] Setting CPU governor to performance..."
     for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-        echo \"performance\" > \"\$gov\" 2>/dev/null || true
+        echo "performance" > "$gov" 2>/dev/null || true
     done
-    echo -e \"${GREEN}[+] CPU governor set to performance${NC}\\n\"
+    echo -e "${GREEN}[+] CPU governor set to performance${NC}\n"
     
     # Network tuning
-    echo \"[2] Optimizing network stack...\"
+    echo "[2] Optimizing network stack..."
     sysctl -w net.ipv4.tcp_tw_reuse=1
     sysctl -w net.ipv4.tcp_fin_timeout=30
     sysctl -w net.core.somaxconn=32768
     sysctl -w net.ipv4.tcp_max_syn_backlog=16384
     sysctl -w net.core.netdev_max_backlog=5000
-    echo -e \"${GREEN}[+] Network optimized for low latency${NC}\\n\"
+    echo -e "${GREEN}[+] Network optimized for low latency${NC}\n"
     
     # Disable power saving
-    echo \"[3] Disabling power saving features...\"
+    echo "[3] Disabling power saving features..."
     sysctl -w kernel.sched_migration_cost_ns=5000000
-    echo -e \"${GREEN}[+] Power saving disabled${NC}\\n\"
+    echo -e "${GREEN}[+] Power saving disabled${NC}\n"
     
-    echo -e \"${GREEN}[✓] High Performance profile applied!${NC}\\n\"
+    echo -e "${GREEN}[✓] High Performance profile applied!${NC}\n"
 }
 
 tune_balanced() {
-    echo -e \"\\n${BLUE}[*] Applying Balanced profile...${NC}\\n\"
+    echo -e "\n${BLUE}[*] Applying Balanced profile...${NC}\n"
     
     # CPU Governor
-    echo \"[1] Setting CPU governor to schedutil...\"
+    echo "[1] Setting CPU governor to schedutil..."
     for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-        echo \"schedutil\" > \"\$gov\" 2>/dev/null || echo \"ondemand\" > \"\$gov\" 2>/dev/null || true
+        echo "schedutil" > "$gov" 2>/dev/null || echo "ondemand" > "$gov" 2>/dev/null || true
     done
-    echo -e \"${GREEN}[+] CPU governor set to balanced${NC}\\n\"
+    echo -e "${GREEN}[+] CPU governor set to balanced${NC}\n"
     
     # Network tuning
-    echo \"[2] Optimizing network stack...\"
+    echo "[2] Optimizing network stack..."
     sysctl -w net.ipv4.tcp_tw_reuse=1
     sysctl -w net.ipv4.tcp_fin_timeout=60
     sysctl -w net.core.somaxconn=4096
     sysctl -w net.ipv4.tcp_max_syn_backlog=2048
-    echo -e \"${GREEN}[+] Network optimized for balance${NC}\\n\"
+    echo -e "${GREEN}[+] Network optimized for balance${NC}\n"
     
     # Memory
-    echo \"[3] Setting memory parameters...\"
+    echo "[3] Setting memory parameters..."
     sysctl -w vm.swappiness=30
     sysctl -w vm.dirty_ratio=15
     sysctl -w vm.dirty_background_ratio=5
-    echo -e \"${GREEN}[+] Memory parameters optimized${NC}\\n\"
+    echo -e "${GREEN}[+] Memory parameters optimized${NC}\n"
     
-    echo -e \"${GREEN}[✓] Balanced profile applied!${NC}\\n\"
+    echo -e "${GREEN}[✓] Balanced profile applied!${NC}\n"
 }
 
 tune_power_saving() {
-    echo -e \"\\n${BLUE}[*] Applying Power Saving profile...${NC}\\n\"
+    echo -e "\n${BLUE}[*] Applying Power Saving profile...${NC}\n"
     
     # CPU Governor
-    echo \"[1] Setting CPU governor to powersave...\"
+    echo "[1] Setting CPU governor to powersave..."
     for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-        echo \"powersave\" > \"\$gov\" 2>/dev/null || true
+        echo "powersave" > "$gov" 2>/dev/null || true
     done
-    echo -e \"${GREEN}[+] CPU governor set to powersave${NC}\\n\"
+    echo -e "${GREEN}[+] CPU governor set to powersave${NC}\n"
     
     # Network tuning
-    echo \"[2] Optimizing for power saving...\"
+    echo "[2] Optimizing for power saving..."
     sysctl -w net.ipv4.tcp_tw_reuse=1
     sysctl -w net.ipv4.tcp_fin_timeout=120
     sysctl -w net.ipv4.tcp_keepalive_time=900
-    echo -e \"${GREEN}[+] Network optimized for power saving${NC}\\n\"
+    echo -e "${GREEN}[+] Network optimized for power saving${NC}\n"
     
     # Memory
-    echo \"[3] Setting memory parameters for low power...\"
+    echo "[3] Setting memory parameters for low power..."
     sysctl -w vm.swappiness=60
     sysctl -w vm.dirty_ratio=30
     sysctl -w vm.dirty_background_ratio=10
     sysctl -w kernel.sched_migration_cost_ns=500000
-    echo -e \"${GREEN}[+] Memory parameters optimized${NC}\\n\"
+    echo -e "${GREEN}[+] Memory parameters optimized${NC}\n"
     
-    echo -e \"${GREEN}[✓] Power Saving profile applied!${NC}\\n\"
+    echo -e "${GREEN}[✓] Power Saving profile applied!${NC}\n"
 }
 
 tune_web_server() {
-    echo -e \"\\n${BLUE}[*] Applying Web Server Optimization profile...${NC}\\n\"
+    echo -e "\n${BLUE}[*] Applying Web Server Optimization profile...${NC}\n"
     
-    echo \"[1] Optimizing for web server workload...\"
+    echo "[1] Optimizing for web server workload..."
     
     # TCP optimization
     sysctl -w net.ipv4.tcp_tw_reuse=1
@@ -573,30 +573,30 @@ tune_web_server() {
     sysctl -w net.core.somaxconn=65535
     sysctl -w net.ipv4.tcp_max_syn_backlog=65535
     sysctl -w net.core.netdev_max_backlog=10000
-    sysctl -w net.ipv4.ip_local_port_range=\"1024 65535\"
+    sysctl -w net.ipv4.ip_local_port_range="1024 65535"
     
     # File descriptors
-    echo -e \"${GREEN}[+] Increasing file descriptor limits...${NC}\"
-    echo \"* soft nofile 100000\" >> /etc/security/limits.conf
-    echo \"* hard nofile 100000\" >> /etc/security/limits.conf
+    echo -e "${GREEN}[+] Increasing file descriptor limits...${NC}"
+    echo "* soft nofile 100000" >> /etc/security/limits.conf
+    echo "* hard nofile 100000" >> /etc/security/limits.conf
     
     # Buffer optimization
-    sysctl -w net.ipv4.tcp_rmem=\"4096 87380 16777216\"
-    sysctl -w net.ipv4.tcp_wmem=\"4096 65536 16777216\"
+    sysctl -w net.ipv4.tcp_rmem="4096 87380 16777216"
+    sysctl -w net.ipv4.tcp_wmem="4096 65536 16777216"
     
     # CPU Governor
     for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-        echo \"performance\" > \"\$gov\" 2>/dev/null || true
+        echo "performance" > "$gov" 2>/dev/null || true
     done
     
-    echo -e \"${GREEN}[+] CPU governor set to performance${NC}\"
-    echo -e \"${GREEN}[✓] Web Server Optimization profile applied!${NC}\\n\"
+    echo -e "${GREEN}[+] CPU governor set to performance${NC}"
+    echo -e "${GREEN}[✓] Web Server Optimization profile applied!${NC}\n"
 }
 
 tune_database_server() {
-    echo -e \"\\n${BLUE}[*] Applying Database Server Optimization profile...${NC}\\n\"
+    echo -e "\n${BLUE}[*] Applying Database Server Optimization profile...${NC}\n"
     
-    echo \"[1] Optimizing for database workload...\"
+    echo "[1] Optimizing for database workload..."
     
     # Memory optimization
     sysctl -w vm.swappiness=10
@@ -606,10 +606,10 @@ tune_database_server() {
     sysctl -w vm.page-cluster=3
     
     # Shared memory for database
-    TOTAL_MEM=\$(grep MemTotal /proc/meminfo | awk '{print \$2}')
-    SHMMAX=\$((\$TOTAL_MEM * 1024 * 75 / 100))
-    sysctl -w kernel.shmmax=\$SHMMAX
-    sysctl -w kernel.shmall=\$((\$SHMMAX / 4096))
+    TOTAL_MEM=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+    SHMMAX=$(($TOTAL_MEM * 1024 * 75 / 100))
+    sysctl -w kernel.shmmax=$SHMMAX
+    sysctl -w kernel.shmall=$(($SHMMAX / 4096))
     
     # Network optimization
     sysctl -w net.ipv4.tcp_tw_reuse=1
@@ -617,26 +617,26 @@ tune_database_server() {
     sysctl -w net.ipv4.tcp_max_syn_backlog=4096
     
     # File descriptors
-    echo \"* soft nofile 65535\" >> /etc/security/limits.conf
-    echo \"* hard nofile 65535\" >> /etc/security/limits.conf
+    echo "* soft nofile 65535" >> /etc/security/limits.conf
+    echo "* hard nofile 65535" >> /etc/security/limits.conf
     
     # CPU Governor
     for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-        echo \"performance\" > \"\$gov\" 2>/dev/null || true
+        echo "performance" > "$gov" 2>/dev/null || true
     done
     
-    echo -e \"${GREEN}[+] Database server optimized${NC}\"
-    echo -e \"${GREEN}[✓] Database Server Optimization profile applied!${NC}\\n\"
+    echo -e "${GREEN}[+] Database server optimized${NC}"
+    echo -e "${GREEN}[✓] Database Server Optimization profile applied!${NC}\n"
 }
 
 tune_streaming_server() {
-    echo -e \"\\n${BLUE}[*] Applying Streaming/Media Server Optimization profile...${NC}\\n\"
+    echo -e "\n${BLUE}[*] Applying Streaming/Media Server Optimization profile...${NC}\n"
     
-    echo \"[1] Optimizing for streaming workload...\"
+    echo "[1] Optimizing for streaming workload..."
     
     # Large buffer sizes
-    sysctl -w net.ipv4.tcp_rmem=\"131072 262144 16777216\"
-    sysctl -w net.ipv4.tcp_wmem=\"131072 262144 16777216\"
+    sysctl -w net.ipv4.tcp_rmem="131072 262144 16777216"
+    sysctl -w net.ipv4.tcp_wmem="131072 262144 16777216"
     sysctl -w net.core.rmem_max=16777216
     sysctl -w net.core.wmem_max=16777216
     
@@ -644,7 +644,7 @@ tune_streaming_server() {
     sysctl -w net.ipv4.tcp_tw_reuse=1
     sysctl -w net.core.somaxconn=65535
     sysctl -w net.ipv4.tcp_max_syn_backlog=65535
-    sysctl -w net.ipv4.ip_local_port_range=\"1024 65535\"
+    sysctl -w net.ipv4.ip_local_port_range="1024 65535"
     
     # Congestion control
     sysctl -w net.ipv4.tcp_congestion_control=bbr
@@ -657,54 +657,54 @@ tune_streaming_server() {
     
     # CPU Governor
     for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-        echo \"performance\" > \"\$gov\" 2>/dev/null || true
+        echo "performance" > "$gov" 2>/dev/null || true
     done
     
     # File descriptors
-    echo \"* soft nofile 200000\" >> /etc/security/limits.conf
-    echo \"* hard nofile 200000\" >> /etc/security/limits.conf
+    echo "* soft nofile 200000" >> /etc/security/limits.conf
+    echo "* hard nofile 200000" >> /etc/security/limits.conf
     
-    echo -e \"${GREEN}[+] Streaming server optimized${NC}\"
-    echo -e \"${GREEN}[✓] Streaming/Media Server Optimization profile applied!${NC}\\n\"
+    echo -e "${GREEN}[+] Streaming server optimized${NC}"
+    echo -e "${GREEN}[✓] Streaming/Media Server Optimization profile applied!${NC}\n"
 }
 
 ################################################################################
 # Function: File Hosting Server Tuning
 ################################################################################
 tune_file_hosting_server() {
-    echo -e \"\\n${BLUE}[*] Applying File Hosting Server Optimization profile...${NC}\\n\"
+    echo -e "\n${BLUE}[*] Applying File Hosting Server Optimization profile...${NC}\n"
     
-    echo \"[1] Optimizing for file hosting workload...\"
+    echo "[1] Optimizing for file hosting workload..."
     
     # Large file handling - optimize buffers
-    sysctl -w net.ipv4.tcp_rmem=\"262144 524288 33554432\"
-    sysctl -w net.ipv4.tcp_wmem=\"262144 524288 33554432\"
+    sysctl -w net.ipv4.tcp_rmem="262144 524288 33554432"
+    sysctl -w net.ipv4.tcp_wmem="262144 524288 33554432"
     sysctl -w net.core.rmem_max=33554432
     sysctl -w net.core.wmem_max=33554432
-    echo -e \"${GREEN}[+] Large file buffers configured (32MB)${NC}\\n\"
+    echo -e "${GREEN}[+] Large file buffers configured (32MB)${NC}\n"
     
     # Connection handling
-    echo \"[2] Optimizing TCP connections...\"
+    echo "[2] Optimizing TCP connections..."
     sysctl -w net.ipv4.tcp_tw_reuse=1
     sysctl -w net.ipv4.tcp_fin_timeout=20
     sysctl -w net.core.somaxconn=65535
     sysctl -w net.ipv4.tcp_max_syn_backlog=32768
     sysctl -w net.core.netdev_max_backlog=65535
-    sysctl -w net.ipv4.ip_local_port_range=\"1024 65535\"
-    echo -e \"${GREEN}[+] TCP optimized for high concurrency${NC}\\n\"
+    sysctl -w net.ipv4.ip_local_port_range="1024 65535"
+    echo -e "${GREEN}[+] TCP optimized for high concurrency${NC}\n"
     
     # File descriptor limits
-    echo \"[3] Setting high file descriptor limits...\"
+    echo "[3] Setting high file descriptor limits..."
     sysctl -w fs.file-max=4000000
-    echo -e \"${GREEN}[+] System file-max set to 4M${NC}\\n\"
+    echo -e "${GREEN}[+] System file-max set to 4M${NC}\n"
     
     # Filesystem optimization
-    echo \"[4] Optimizing filesystem caching...\"
+    echo "[4] Optimizing filesystem caching..."
     sysctl -w vm.swappiness=15
     sysctl -w vm.dirty_ratio=20
     sysctl -w vm.dirty_background_ratio=5
     sysctl -w vm.dirty_writeback_centisecs=500
-    echo -e \"${GREEN}[+] Filesystem caching optimized${NC}\\n\"
+    echo -e "${GREEN}[+] Filesystem caching optimized${NC}\n"
     
     # Connection tracking
     sysctl -w net.netfilter.nf_conntrack_max=1000000
@@ -712,19 +712,19 @@ tune_file_hosting_server() {
     
     # CPU performance
     for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-        echo \"performance\" > \"\$gov\" 2>/dev/null || true
+        echo "performance" > "$gov" 2>/dev/null || true
     done
-    echo -e \"${GREEN}[+] CPU and connection tracking optimized${NC}\"
-    echo -e \"${GREEN}[✓] File Hosting Server Optimization profile applied!${NC}\\n\"
+    echo -e "${GREEN}[+] CPU and connection tracking optimized${NC}"
+    echo -e "${GREEN}[✓] File Hosting Server Optimization profile applied!${NC}\n"
 }
 
 ################################################################################
 # Function: Torrenting Server Tuning
 ################################################################################
 tune_torrenting_server() {
-    echo -e \"\\n${BLUE}[*] Applying Torrenting Server Optimization profile...${NC}\\n\"
+    echo -e "\n${BLUE}[*] Applying Torrenting Server Optimization profile...${NC}\n"
     
-    echo \"[1] Optimizing for high peer connections...\"
+    echo "[1] Optimizing for high peer connections..."
     
     # Massive connection handling for torrenting
     sysctl -w net.ipv4.tcp_tw_reuse=1
@@ -733,45 +733,45 @@ tune_torrenting_server() {
     sysctl -w net.core.somaxconn=65535
     sysctl -w net.ipv4.tcp_max_syn_backlog=65535
     sysctl -w net.core.netdev_max_backlog=65535
-    sysctl -w net.ipv4.ip_local_port_range=\"1024 65535\"
-    echo -e \"${GREEN}[+] TCP configured for extreme concurrency${NC}\\n\"
+    sysctl -w net.ipv4.ip_local_port_range="1024 65535"
+    echo -e "${GREEN}[+] TCP configured for extreme concurrency${NC}\n"
     
-    echo \"[2] Configuring network buffers...\"
+    echo "[2] Configuring network buffers..."
     # Medium-sized buffers for many connections
-    sysctl -w net.ipv4.tcp_rmem=\"65536 131072 8388608\"
-    sysctl -w net.ipv4.tcp_wmem=\"65536 131072 8388608\"
+    sysctl -w net.ipv4.tcp_rmem="65536 131072 8388608"
+    sysctl -w net.ipv4.tcp_wmem="65536 131072 8388608"
     sysctl -w net.core.rmem_max=16777216
     sysctl -w net.core.wmem_max=16777216
-    echo -e \"${GREEN}[+] Network buffers optimized for many peers${NC}\\n\"
+    echo -e "${GREEN}[+] Network buffers optimized for many peers${NC}\n"
     
-    echo \"[3] Setting extremely high file descriptor limits...\"
+    echo "[3] Setting extremely high file descriptor limits..."
     sysctl -w fs.file-max=10000000
-    echo -e \"${GREEN}[+] System file-max set to 10M${NC}\\n\"
+    echo -e "${GREEN}[+] System file-max set to 10M${NC}\n"
     
-    echo \"[4] Optimizing connection tracking...\"
+    echo "[4] Optimizing connection tracking..."
     sysctl -w net.netfilter.nf_conntrack_max=2000000
     sysctl -w net.netfilter.nf_conntrack_tcp_timeout_time_wait=60
     sysctl -w net.netfilter.nf_conntrack_tcp_timeout_established=600
-    echo -e \"${GREEN}[+] Connection tracking for massive peer swarms${NC}\\n\"
+    echo -e "${GREEN}[+] Connection tracking for massive peer swarms${NC}\n"
     
-    echo \"[5] Memory optimization...\"
+    echo "[5] Memory optimization..."
     sysctl -w vm.swappiness=5
     sysctl -w vm.dirty_ratio=10
     sysctl -w vm.dirty_background_ratio=2
     sysctl -w vm.vfs_cache_pressure=100
-    echo -e \"${GREEN}[+] Memory optimized with minimal swap${NC}\\n\"
+    echo -e "${GREEN}[+] Memory optimized with minimal swap${NC}\n"
     
-    echo \"[6] Congestion control...\"
+    echo "[6] Congestion control..."
     sysctl -w net.ipv4.tcp_congestion_control=bbr
     sysctl -w net.core.default_qdisc=fq
-    echo -e \"${GREEN}[+] BBR congestion control enabled${NC}\\n\"
+    echo -e "${GREEN}[+] BBR congestion control enabled${NC}\n"
     
     # CPU performance
     for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-        echo \"performance\" > \"\$gov\" 2>/dev/null || true
+        echo "performance" > "$gov" 2>/dev/null || true
     done
-    echo -e \"${GREEN}[+] CPU set to performance mode${NC}\"
-    echo -e \"${GREEN}[✓] Torrenting Server Optimization profile applied!${NC}\\n\"
+    echo -e "${GREEN}[+] CPU set to performance mode${NC}"
+    echo -e "${GREEN}[✓] Torrenting Server Optimization profile applied!${NC}\n"
 }
 
 ################################################################################
